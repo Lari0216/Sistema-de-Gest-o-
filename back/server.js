@@ -13,9 +13,30 @@ app.get('/clientes', async (req,res) => {
     res.json(clientes.rows)
 })
 
-app.post('/clientes', async (req, res) => {
-    const novoCliente = await 
+app.put('/clientes/:id', async (req, res) => {
+    const {id} = req.params
+    const {nome, email} = req.body
+    const atualizarCliente = await pool.query('UPDATE Clientes SET nome = $1, email = $2, WHERE id = $3 * RETURNINGN',[nome, email, id])
+    res.json(atualizarCliente.rows[0])
 })
+
+
+
+// =============================================== COLABORADORES =================================================================
+
+app.get('/colaboradores', async (req,res) => {
+    const colaboradores = await pool.query("SELECT * FROM Colaboradores")
+    res.json(colaboradores.rows)
+})
+
+app.put('/colaboradores/:id', async (req, res) => {
+    const {id} = req.params
+    const {nome, email} = req.body
+    const atualizarColaborador = await pool.query('UPDATE Colaboradores SET nome = $1, email = $2, WHERE id = $3 * RETURNINGN',[nome, email, id])
+    res.json(atualizarColaborador.rows[0])
+})
+
+// =============================================== GERENCIAMENTO =================================================================
 
 app.listen(PORT, () =>{
     console.log("API para MAIORES rodando em: http://localhost:3000")
